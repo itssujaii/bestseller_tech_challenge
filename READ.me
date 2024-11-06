@@ -89,6 +89,13 @@ Development strategy for this ETL Operation:
 
 This script automates an ETL (Extract, Transform, Load) process for e-commerce sales data. It extracts data from a CSV file, transforms it by calculating total prices, and loads it into a structured SQLite database table. Each ETL phase is modular and includes error handling and logging, ensuring data integrity and ease of debugging. The primary aim is to prepare clean, structured data for efficient analysis, making it easy to track sales trends and generate reports.
 
+Advantages of This Approach:
+
+Modular Structure: Each function is responsible for a single part of the ETL process, making the script reusable and easy to maintain.
+Data Integrity: The table design with primary keys enforces data uniqueness, and duplicate rows are removed before loading to keep the data clean.
+Error Handling: Error messages and logs at each step provide feedback and aid in troubleshooting, which is essential in production ETL tasks.
+Automated, Repeatable Process: The entire ETL pipeline runs automatically when the script is executed, ensuring consistent processing of data without manual intervention.
+
 
 
 
