@@ -97,6 +97,19 @@ Error Handling: Error messages and logs at each step provide feedback and aid in
 Automated, Repeatable Process: The entire ETL pipeline runs automatically when the script is executed, ensuring consistent processing of data without manual intervention.
 
 
+This Airflow script sets up an automated workflow for running the ETL process daily. Here are the key advantages of using this Airflow-based approach for scheduling and monitoring the ETL pipeline:
+
+Automation and Scheduling: The ETL process is scheduled to run daily using Airflow’s DAG, ensuring data is refreshed regularly without manual intervention.
+
+Error Handling and Retries: With retries and retry_delay in the default arguments, failed ETL jobs can automatically retry after a short delay, increasing reliability.
+
+Modular and Maintainable: By separating the ETL logic in an external script (etl.py), this setup allows for easy updates to the ETL code without modifying the DAG.
+
+Logging and Monitoring: Airflow provides built-in logging and monitoring, making it easy to track task progress, identify issues, and check execution history.
+
+Scalability: Airflow’s DAG structure enables scaling with additional tasks, making it flexible if new steps are added to the ETL process.
+
+
 
 
 
