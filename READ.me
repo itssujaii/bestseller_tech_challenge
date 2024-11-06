@@ -1,0 +1,91 @@
+# ETL Process for Customer Sales Analytics
+
+This repository contains a Python script that implements an Extract, Transform, Load (ETL) process for customer sales data. 
+The ETL process extracts data from a CSV file, transforms it, and loads it into a SQLite database for analysis. 
+The table created in the database is named `Customer_Sale_Analytics`.
+
+app/etl.py: This file contains the logic for your ETL process.
+my_data/: This directory contains the raw data files used by the ETL pipeline (e.g., bestsellers.csv).
+Dockerfile: Used to build a Docker image for running the ETL script.
+docker-compose.yml: Docker Compose configuration to run the container and orchestrate the ETL pipeline.
+
+
+## Prerequisites(All steps are done for Mac system)
+
+Download the file from Website- https://archive.ics.uci.edu/dataset/352/online+retail & rename it to csv format.
+
+Ensure the following libraries are installed using the requirements.txt file.
+
+pandas
+sqlalchemy
+loguru
+
+Additionally, you'll need:
+- Python 3.9 (inside the container)
+- Docker
+- Visual stuio Code - Easy Navigation & Running commands,steps etc
+
+Install python 3.9 & setup the environment paths.
+Install Visual Stuio Code application from web.
+Install Docker from the website & complete the installation software on your local machine.
+    Run Following commands to test it.
+    1. docker --version
+    2. docker run hello-world
+
+Clicking on the Docker icon in the menu bar.
+Going to Preferences > General.
+Check the box Start Docker Desktop when you log in.
+
+3.Build the Docker Image,Now that you have your Dockerfile and requirements.txt set up, you can build the Docker image.
+Open a terminal in your project directory (where the Dockerfile is located).
+
+Run the following command to build the Docker image:
+    4. docker build -t etl-app .
+         - docker-compose build
+         - docker-compose up 
+         - docker-compose logs -f
+
+    5. docker run -v $(pwd)/my_data:/app/data etl-app
+
+ETL script creates a SQLite database (ecommerce.db) and you want to persist it outside of the container, you can mount a volume for the database as well. 
+Modify the docker run command as follows:
+    6. docker run -v $(pwd)/my_data:/app/data -v $(pwd)/db:/app/db etl-app
+    7. docker logs <container_id>
+    8. docker ps - this is useful to get the container details eg -id,name etc
+     Debugging commands .
+     - docker stop <container_id>
+     - docker rm <container_id>
+     - docker rmi etl-app
+     9. Some more debugging commands
+     - docker-compose down # Stops and removes the containers 
+     - docker-compose up --build # Rebuilds and restarts the containers
+     10. Once the script is validated and tested with above commands, you can see the output from the below commands.
+        - sqlite3 app/ecommerce.db
+        - sqlite3 ecommerce.db
+        - select * from Customer_Sale_Analytics LIMIT 10;
+     11. Also the same logs is visible in the Docker Desktop application.
+
+
+     12. Next stage is to implement the Airflow Functionality.
+        - Create etl_dag.py script and etl_wrapper.py scripts(Comments are already mentioned in the Code) 
+        - pip install apache-airflow
+        - curl -LfO 'https://airflow.apache.org/docs/apache-airflow/2.10.3/docker-compose.yaml' (After you run this, you get the docker-compose.yaml file & then you can update the existing docker info to this one file)
+        - docker-compose --version
+        - docker-compose up airflow-webserver
+        - docker-compose up airflow-scheduler
+        - docker-compose up -d
+        - docker-compose build --no-cache  (Building Airflow)
+        - docker-compose exec ecommerce_data_pipeline-airflow-worker-1 bash (Restarting)
+        - http://localhost:8080
+            Username: airflow
+            Password: airflow
+        - Login & search for the newly created DAG - ecommerce_etl_dag & execute it.
+        - You can see the results in Airflow & Docker logs
+
+
+
+
+
+
+
+
